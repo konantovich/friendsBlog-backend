@@ -13,12 +13,12 @@ import handleValidationErrors from './utils/handleValidationErrors.js'
 
 
 // 'mongodb+srv://admin:wwwwww@cluster0.qzke4.mongodb.net/blog?retryWrites=true&w=majority'
-mongoose.connect(
-    'mongodb+srv://admin:wwwwww@cluster0.qzke4.mongodb.net/blog?retryWrites=true&w=majority'
-)
 // mongoose.connect(
-//     process.env.MONGODB_URI
+//     'mongodb+srv://admin:wwwwww@cluster0.qzke4.mongodb.net/blog?retryWrites=true&w=majority'
 // )
+mongoose.connect(
+    process.env.MONGODB_URI
+)
 .then(() => console.log('DB Ok'))
 .catch((err) => console.log('err', err))
 
