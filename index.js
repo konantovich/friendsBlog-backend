@@ -2,7 +2,7 @@ import express from 'express';
 import multer from 'multer';
 import cors from 'cors'; 
 import mongoose from 'mongoose';
-
+import fs from 'fs' //auto create folder
 
 import { registerValidation, loginValidation, postCreateValidation } from './validations.js'
 
@@ -14,8 +14,11 @@ import handleValidationErrors from './utils/handleValidationErrors.js'
 
 // 'mongodb+srv://admin:wwwwww@cluster0.qzke4.mongodb.net/blog?retryWrites=true&w=majority'
 mongoose.connect(
-    process.env.MONGODB_URI
+    'mongodb+srv://admin:wwwwww@cluster0.qzke4.mongodb.net/blog?retryWrites=true&w=majority'
 )
+// mongoose.connect(
+//     process.env.MONGODB_URI
+// )
 .then(() => console.log('DB Ok'))
 .catch((err) => console.log('err', err))
 
@@ -28,6 +31,9 @@ app.use(cors());
 ////UPLOADS FILES
 const storage = multer.diskStorage({
     destination: (_, __, callback) => {
+        if (!fs.existsSync('uploads')){//if fs cant fild folder 'uploads'
+            fs.mkdirSync('uploads')//create /uploads folder (for heroku/vercel)
+        }
         callback(null, 'uploads'); 
     }, 
 
