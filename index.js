@@ -11,7 +11,11 @@ import * as UserControllers from './UserControllers/UserController.js'
 import * as PostController from './UserControllers/PostController.js'
 import handleValidationErrors from './utils/handleValidationErrors.js' 
 
-mongoose.connect('mongodb+srv://admin:wwwwww@cluster0.qzke4.mongodb.net/blog?retryWrites=true&w=majority')
+
+// 'mongodb+srv://admin:wwwwww@cluster0.qzke4.mongodb.net/blog?retryWrites=true&w=majority'
+mongoose.connect(
+    process.env.MONGODB_URI
+)
 .then(() => console.log('DB Ok'))
 .catch((err) => console.log('err', err))
 
@@ -83,7 +87,8 @@ app.patch('/comment/:id',checkAuth, PostController.addComment)
 
 
 /////START SERVER ON PORT
-app.listen(4444, (err) => {
+//4444
+app.listen(process.env.PORT || 4444, (err) => {
     if (err) {
         return console.log(err)
     }
