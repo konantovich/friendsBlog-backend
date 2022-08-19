@@ -1,1 +1,2 @@
-worker: npm run start
+$ cat Procfile
+web: npm start
