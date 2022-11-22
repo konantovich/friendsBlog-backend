@@ -1,6 +1,8 @@
 import express from 'express'; 
+//import session from 'express-session';
 import multer from 'multer';
 import cors from 'cors'; 
+import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import fs from 'fs' //auto create folder
 
@@ -13,20 +15,33 @@ import handleValidationErrors from './utils/handleValidationErrors.js'
 
 
 // 'mongodb+srv://admin:wwwwww@cluster0.qzke4.mongodb.net/blog?retryWrites=true&w=majority'
-// mongoose.connect(
-//     'mongodb+srv://admin:wwwwww@cluster0.qzke4.mongodb.net/blog?retryWrites=true&w=majority'
-// )
 mongoose.connect(
-    process.env.MONGODB_URI
+    'mongodb+srv://admin:wwwwww@cluster0.qzke4.mongodb.net/blog?retryWrites=true&w=majority'
 )
+// mongoose.connect(
+//     process.env.MONGODB_URI
+// )
 .then(() => console.log('DB Ok'))
 .catch((err) => console.log('err', err))
+
+
+
+
+
 
 
 const app = express ();
 
 app.use(cors());
 
+dotenv.config()
+
+
+//Check user google login
+function isLoggedIn(req, res, next) {
+    console.log('isLoggedIn',req.user)
+    req ? next() : res.sendStatus(401);
+}
 
 ////UPLOADS FILES
 const storage = multer.diskStorage({
@@ -67,11 +82,27 @@ app.use('/uploads/avatars', express.static('uploads'));
 app.use(express.json());
 
 
+// app.all('/*', function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     next();
+// });
+
+
 app.post('/auth/login', loginValidation, handleValidationErrors, UserControllers.login)
 
 /////USER REGISTRATION
 app.post('/auth/register',  registerValidation, handleValidationErrors, UserControllers.register); 
 
+////GOOGLE LOGIN 
+app.post('/auth/googleauth', UserControllers.googleAuthOrRegister)
+// app.use(UserControllers.sessionGoogle);
+// app.use(UserControllers.googleInitialize)
+// app.use(UserControllers.passportSession)
+// app.get('/auth/google',  UserControllers.googleAuth)
+// app.get('/auth/google/callback', cors(), UserControllers.googleAuthCallback)
+// app.get('/auth/google/failure', UserControllers.googleAuthFailure)
+// app.get('/auth/google/success',isLoggedIn, cors(), UserControllers.googleAuthSuccess)
+// app.get('/auth/google/logout', UserControllers.googleAuthLogout)
 
 ////CHECK INFO FOR MYSELF (USER)
 app.get('/auth/me', checkAuth, UserControllers.checkLogin)
