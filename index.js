@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import fs from 'fs' //auto create folder
 
+
 import { registerValidation, loginValidation, postCreateValidation } from './validations.js'
 
 import checkAuth from './utils/checkAuth.js'
@@ -122,6 +123,17 @@ app.patch('/posts/:id',checkAuth, postCreateValidation, handleValidationErrors, 
 
 app.patch('/comment/:id',checkAuth, PostController.addComment)
 
+// import { createRequire } from 'module';
+// const require = createRequire(import.meta.url);
+// const http = require("http")
+// const server = http.createServer()
+// // We define a function that runs in response a request event
+// server.on("request", (request, response) => {
+//   // handle request based on method then URL
+//   response.statusCode = 200
+//   response.write("Hello World")
+//   response.end()
+// })
 
 /////START SERVER ON PORT
 //4444
