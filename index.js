@@ -37,11 +37,11 @@ app.use(cors());
 dotenv.config()
 
 
-//Check user google login
-function isLoggedIn(req, res, next) {
-    console.log('isLoggedIn',req.user)
-    req ? next() : res.sendStatus(401);
-}
+// //Check user google login
+// function isLoggedIn(req, res, next) {
+//     console.log('isLoggedIn',req.user)
+//     req ? next() : res.sendStatus(401);
+// }
 
 ////UPLOADS FILES
 const storage = multer.diskStorage({

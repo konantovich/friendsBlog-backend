@@ -94,7 +94,7 @@ passport.serializeUser(function (user, cb) {
 
 passport.deserializeUser(function (user, cb) {
    process.nextTick(function () {
-      console.log('deserializeUser', user);
+      // console.log('deserializeUser', user);
       return cb(null, user);
    });
 });
@@ -169,7 +169,7 @@ export const googleAuthOrRegister = async (req, res, next) => {
             token
          });
       }
-      console.log('req.body',  user._doc,)
+
       const token = jwt.sign(
          {
             _id: user._id
@@ -179,6 +179,7 @@ export const googleAuthOrRegister = async (req, res, next) => {
             expiresIn: '30d'
          }
       );
+
 
       res.json({
         ...user._doc,
@@ -239,15 +240,16 @@ export const login = async (req, res) => {
 export const checkLogin = async (req, res) => {
    try {
       const user = await UserModel.findById(req.userId);
-
+      console.log(user._doc)
       if (!user) {
          return res.status(404).json({
             message: 'User not finded'
          });
       }
-
+      // console.log('user._doc',user._doc)
       const { passwordHash, ...userData } = user._doc;
 
+    
       res.json({ userData });
    } catch (err) {
       console.log(err);
